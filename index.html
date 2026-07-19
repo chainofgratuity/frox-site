@@ -597,12 +597,12 @@
         <div class="price-badge">Best Deal</div>
         <h3>The Shared Heart Collection</h3>
         <div class="price-amount"><sup>$</sup>50</div>
-        <div class="price-note">Bulk Pricing</div>
+        <div class="price-note">Flat Price &middot; Shipping Included</div>
         <p>Share the comfort with everyone who loved them. We craft small pieces from your ashes so more people can carry a piece of them.</p>
         <ul class="price-includes">
           <li>Randomized assortment of pocket keepsake or wearable shapes</li>
           <li>Each piece its own color choice</li>
-          <li>Final count &amp; total confirmed once we see your ashes</li>
+          <li>Number of pieces depends on ashes received, at our discretion</li>
           <li>Add a statement piece: $20 each (half off!)</li>
           <li>All shipping included</li>
         </ul>
@@ -698,11 +698,11 @@
       <!-- SHARED HEART COLLECTION FIELDS -->
       <div class="bundle-block" id="bundleBlockEl">
         <div class="form-group">
-          <label>Small Pieces &mdash; who's it for?</label>
-          <span class="field-hint">Add one row per piece as a starting list. Small pieces are $35 each — if your ashes yield more than you listed, we'll craft extras and confirm the final count and total with you before shipping. If less, we'll adjust down.</span>
+          <label>Shape &amp; Color Preferences</label>
+          <span class="field-hint">The Shared Heart Collection is a flat $50, no matter how many pieces it becomes — that part is up to us, based on how much ash you're able to send. List out shape/color preferences below and we'll do our best to match them, in the order listed.</span>
         </div>
         <div class="piece-rows" id="pieceRows"></div>
-        <button type="button" class="add-piece-btn" id="addPieceBtn">+ Add Another Small Piece</button>
+        <button type="button" class="add-piece-btn" id="addPieceBtn">+ Add Another Preference</button>
 
         <div class="addon-row">
           <div class="addon-label">
@@ -721,11 +721,11 @@
         </div>
 
         <div class="price-summary">
-          <div class="price-summary-row"><span id="sumBaseLabel">Small pieces (1 &times; $28)</span><span id="sumBase">$28</span></div>
+          <div class="price-summary-row"><span>The Shared Heart Collection (flat)</span><span id="sumBase">$50</span></div>
           <div class="price-summary-row" id="sumAddonRow" style="display:none;"><span id="sumAddonLabel">Statement add-ons</span><span id="sumAddon">$0</span></div>
-          <div class="price-summary-total"><span>Estimated Total</span><span id="sumTotal">$28</span></div>
+          <div class="price-summary-total"><span>Total</span><span id="sumTotal">$50</span></div>
         </div>
-        <span class="field-hint">This is a starting estimate. Your final invoice is confirmed once we've seen how many pieces your ashes actually make.</span>
+        <span class="field-hint">The number of pieces you receive depends on the ashes you're able to send us — the price itself won't change.</span>
       </div>
 
       <div class="form-group">
@@ -757,7 +757,7 @@
     document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
 
     /* ---------- ORDER TYPE TOGGLE ---------- */
-    const PIECE_PRICE = 50;
+    const COLLECTION_FLAT_PRICE = 50;
     const ADDON_PRICE = 20;
 
     const SMALL_SHAPES = [
@@ -790,7 +790,7 @@
     btnSingleType.addEventListener('click', () => setOrderType('single'));
     btnBundleType.addEventListener('click', () => setOrderType('bundle'));
 
-    /* ---------- BUNDLE PIECE ROWS ---------- */
+    /* ---------- SHARED HEART COLLECTION PREFERENCE ROWS ---------- */
     const pieceRowsContainer = document.getElementById('pieceRows');
     const addPieceBtn = document.getElementById('addPieceBtn');
     let pieceCounter = 0;
@@ -810,16 +810,14 @@
         <div class="piece-row-num">${pieceCounter}</div>
         <select class="piece-shape">${shapeOptionsHtml()}</select>
         <select class="piece-color">${colorOptionsHtml()}</select>
-        <button type="button" class="remove-piece-btn" title="Remove piece">&times;</button>
+        <button type="button" class="remove-piece-btn" title="Remove preference">&times;</button>
       `;
       pieceRowsContainer.appendChild(row);
       row.querySelector('.remove-piece-btn').addEventListener('click', () => {
         row.remove();
         renumberPieceRows();
-        updateSummary();
       });
       renumberPieceRows();
-      updateSummary();
     }
 
     function renumberPieceRows() {
@@ -854,13 +852,8 @@
     /* ---------- LIVE PRICE SUMMARY ---------- */
     function updateSummary() {
       if (orderType !== 'bundle') return;
-      const pieceCount = pieceRowsContainer.querySelectorAll('.piece-row').length;
-      const pieceCost = pieceCount * PIECE_PRICE;
       const addonCost = addonCount * ADDON_PRICE;
-      const total = pieceCost + addonCost;
-
-      document.getElementById('sumBaseLabel').textContent = `Small pieces (${pieceCount} \u00d7 $${PIECE_PRICE})`;
-      document.getElementById('sumBase').textContent = `$${pieceCost}`;
+      const total = COLLECTION_FLAT_PRICE + addonCost;
 
       document.getElementById('sumAddonRow').style.display = addonCount > 0 ? 'flex' : 'none';
       document.getElementById('sumAddonLabel').textContent = `Statement add-ons (${addonCount} \u00d7 $${ADDON_PRICE}, half off!)`;
